@@ -1,40 +1,33 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import { Trash2, Plus, CheckCircle2, Circle } from "lucide-react"
+import { api } from './apiaxios'
 
-// Configuração do Axios para o teu backend no WSL
-const api = axios.create({
-  baseURL: 'http://localhost:3001'
-})
 
 export default function App() {
   const [tasks, setTasks] = useState([])
   const [newTaskTitle, setNewTaskTitle] = useState('')
 
-  // Método Educativo: Carrega os dados assim que o componente é montado
   useEffect(() => {
-    fetchTasks()
-  }, [])
-
-  const fetchTasks = async () => {
-    try {
-      const response = await api.get('/tasks')
+  api.get('/tarefas')
+    .then((response) => {
       setTasks(response.data)
-    } catch (error) {
+    })
+    .catch((error) => {
       console.error("Erro ao procurar tarefas:", error)
-    }
-  }
+    })
+}, [])
 
   const addTask = async (e) => {
     e.preventDefault()
     if (!newTaskTitle.trim()) return
 
     try {
-      const response = await api.post('/tasks', { 
-        title: newTaskTitle, 
-        description: "" 
+      const response = await api.post('/tarefas', {
+        title: newTaskTitle,
+        description: ""
       })
-      setTasks([...tasks, response.data])
+
+      setTasks((prevTasks) => [...prevTasks, response.data])
       setNewTaskTitle('')
     } catch (error) {
       console.error("Erro ao adicionar tarefa:", error)
@@ -43,11 +36,14 @@ export default function App() {
 
   const toggleTask = async (task) => {
     try {
-      const response = await api.put(`/tasks/${task.id}`, {
+      const response = await api.put(`/tarefas/${task.id}`, {
         ...task,
         completed: !task.completed
       })
-      setTasks(tasks.map(t => t.id === task.id ? response.data : t))
+
+      setTasks((prevTasks) =>
+        prevTasks.map((t) => t.id === task.id ? response.data : t)
+      )
     } catch (error) {
       console.error("Erro ao atualizar tarefa:", error)
     }
@@ -55,8 +51,11 @@ export default function App() {
 
   const deleteTask = async (id) => {
     try {
-      await api.delete(`/tasks/${id}`)
-      setTasks(tasks.filter(t => t.id !== id))
+      await api.delete(`/tarefas/${id}`)
+
+      setTasks((prevTasks) =>
+        prevTasks.filter((t) => t.id !== id)
+      )
     } catch (error) {
       console.error("Erro ao apagar tarefa:", error)
     }

@@ -20,13 +20,13 @@ try{
 })
 
 app.post('/tarefas', async(req, res) =>{
-const {title, descricao} = req.body;
+const {title, description} = req.body;
 try{
     const newTask = await prisma.task.create({
         data:{
-            titulo,
-            descricao,
-            completa:false
+            title,
+            description,
+            completed:false
         }
     })
     res.status(201).json(newTask);
@@ -37,11 +37,11 @@ try{
 
 app.put('/tarefas/:id', async (req, res)=>{
     const {id} = req.params;
-    const {titulo, descricao, completa} = req.body;
+    const {title, description, completed} = req.body;
     try{
         const tarefaAtualizada = await prisma.task.update({
             where: {id: parseInt(id) },
-            data: {titulo, descricao, completa}
+            data: {title, description, completed}
         });
         res.status(200).json(tarefaAtualizada);
     }catch(err){
