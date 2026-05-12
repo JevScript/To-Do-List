@@ -1,23 +1,40 @@
 {
-  "name": "backend",
+  "name": "prisma",
   "version": "1.0.0",
   "description": "",
+  "keywords": [],
+  "homepage": "https://github.com/JevScript/To-Do-List#readme",
+  "bugs": {
+    "url": "https://github.com/JevScript/To-Do-List/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JevScript/To-Do-List.git"
+  },
+  "license": "ISC",
+  "author": "jean vicente",
+  "type": "commonjs",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon src/server.js",
+  "postinstall": "prisma generate",
+  "db:migrate": "prisma migrate dev",
+  "db:studio": "prisma studio",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
+    "@prisma/adapter-better-sqlite3": "^7.8.0",
     "@prisma/client": "^7.8.0",
     "axios": "^1.16.0",
     "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
     "express": "^5.2.1"
   },
   "devDependencies": {
+    "@types/node": "^25.7.0",
     "nodemon": "^3.1.14",
-    "prisma": "^7.8.0"
+    "prisma": "^7.8.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
   }
 }
