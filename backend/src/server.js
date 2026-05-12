@@ -45,8 +45,22 @@ app.put('/tarefas/:id', async (req, res)=>{
         });
         res.status(200).json(tarefaAtualizada);
     }catch(err){
-        res.status(400).json({err:"Erro ao atualizar tarefa"})
+        res.status(400).json({err:"Erro ao atualizar tarefa"});
     }
 });
 
+app.delete('/tarefas', async(req, res)=>{
+    const{id} = req.params;
+    try{
+        await prisma.task.delete({where:{id: parseInt(id)}});
+        res.status(204).send();
+    }catch(err){
+        res.status(400).json({err:"Erro ao deletar a tarefa!"});
+    }
+});
+
+const PORT = 3001;
+app.listen(PORT, ()=>{
+    console.log(`Servidor rodando em http://localhost:${PORT}`);
+});
 
