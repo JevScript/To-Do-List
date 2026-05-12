@@ -18,3 +18,19 @@ try{
     res.status(500).json({err:"Erro ao buscar tarefas"})
 }
 })
+
+app.post('/tarefas', async(req, res) =>{
+const {title, descricao} = req.body;
+try{
+    const newTask = await prisma.task.create({
+        data:{
+            titulo,
+            descricao,
+            completa:false
+        }
+    })
+    res.status(201).json(newTask);
+}catch(err){
+    res.status(400).json({err:"Erro ao criar tarefa"})
+}
+});
