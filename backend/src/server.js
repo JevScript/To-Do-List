@@ -34,3 +34,19 @@ try{
     res.status(400).json({err:"Erro ao criar tarefa"})
 }
 });
+
+app.put('/tarefas/:id', async (req, res)=>{
+    const {id} = req.params;
+    const {titulo, descricao, completa} = req.body;
+    try{
+        const tarefaAtualizada = await prisma.task.update({
+            where: {id: parseInt(id) },
+            data: {titulo, descricao, completa}
+        });
+        res.status(200).json(tarefaAtualizada);
+    }catch(err){
+        res.status(400).json({err:"Erro ao atualizar tarefa"})
+    }
+});
+
+
